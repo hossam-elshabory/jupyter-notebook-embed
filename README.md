@@ -1,306 +1,133 @@
-# Quartz Community Plugin Template
+# Jupyter Notebook Embed for Quartz
 
-Production-ready template for building, testing, and publishing Quartz community plugins. It mirrors
-Quartz's native plugin patterns and uses a factory-function API similar to Astro integrations:
-plugins are created by functions that return objects with `name` and lifecycle hooks.
+Embed Jupyter notebooks directly into your [Quartz](https://quartz.jzhao.xyz) site. Any link ending in `.ipynb` is automatically rendered as an interactive, styled notebook with cell outputs, images, and one-click Colab/GitHub buttons.
 
 ## Highlights
 
-- ✅ Quartz-compatible transformer/filter/emitter examples
-- ✅ TypeScript-first with exported types for consumers
-- ✅ `tsup` bundling + declaration output
-- ✅ Pre-built `dist/` ships in the repo — instant installation for users
-- ✅ Vitest testing setup with example tests
-- ✅ Linting/formatting with ESLint + Prettier
-- ✅ CI workflow for checks and npm publishing
-- ✅ Demonstrates CSS/JS resource injection and remark/rehype usage
+- ✅ **Zero-config embedding** — just link to any `.ipynb` file
+- ✅ **GitHub auto-detection** — pastes GitHub URLs directly, raw conversion is automatic
+- ✅ **Extracted images** — base64 PNG outputs are written to static files for fast page loads
+- ✅ **Collapsible notebooks** — expand/collapse with a pure-CSS toggle (no JS required)
+- ✅ **Colab & GitHub buttons** — one-click access to open notebooks externally
+- ✅ **Dark mode** — full support for Quartz's light/dark themes
+- ✅ **Cached downloads** — notebooks are cached locally with staleness checks
 
-## Getting started
+## Install
+
+```bash
+npx quartz plugin add github:github:hossam-elshabory/jupyter-notebook-embed
+```
+
+## Quick Start
+
+Add the plugin to your `quartz.config.yaml`:
+
+```yaml
+plugins:
+  - source: github:github:hossam-elshabory/jupyter-notebook-embed
+    enabled: true
+```
+
+Then just link to a notebook in any markdown file:
+
+```markdown
+Check out my analysis: [data-exploration.ipynb](https://github.com/user/repo/blob/main/notebooks/data-exploration.ipynb)
+```
+
+That's it — the link will be replaced with a fully rendered notebook.
+
+### Common Options
+
+```yaml
+plugins:
+  - source: github:github:hossam-elshabory/jupyter-notebook-embed
+    enabled: true
+    options:
+      defaultCollapsed: true    # Start notebooks collapsed (default: false)
+      showCellCount: false      # Hide "N cells" badge (default: true)
+      downloadFromGitHub: true  # Auto-download from GitHub URLs (default: true)
+```
+
+## How It Works
+
+1. **Link detection** — Any `<a>` tag with an `href` ending in `.ipynb` is automatically detected and replaced with the embedded notebook view.
+
+2. **Query parameters** — Control collapse state per-notebook by appending `?collapsed=true` or `?expanded=true` to the link:
+   ```markdown
+   [notebook.ipynb](https://github.com/user/repo/blob/main/nb.ipynb?collapsed=true)
+   ```
+
+3. **GitHub URL conversion** — `github.com` blob URLs are automatically converted to `raw.githubusercontent.com` for downloading. You can paste GitHub URLs directly.
+
+4. **Colab links** — A "Open in Colab" button is automatically generated for notebooks hosted on GitHub.
+
+5. **Image extraction** — Base64-encoded PNG outputs (e.g., matplotlib plots) are extracted to static files in `notebook-assets/` during build, reducing HTML size by up to 80%.
+
+## Configuration Reference
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `defaultCollapsed` | `boolean` | `false` | Whether notebooks start collapsed. |
+| `showCellCount` | `boolean` | `true` | Show the "N cells" badge in the header. |
+| `downloadFromGitHub` | `boolean` | `true` | Auto-download notebooks from GitHub URLs. Disable for offline builds. |
+| `downloadTimeout` | `number` | `10000` | Timeout in ms for notebook downloads. ⚙️ |
+| `cacheDir` | `string` | `"quartz/.quartz-cache/notebooks"` | Directory for cached notebook JSON. ⚙️ |
+| `allowedHtmlTags` | `string[]` | `undefined` | Additional HTML tags to allow in notebook outputs (beyond the safe default). ⚙️ |
+
+<details>
+<summary><strong>Advanced: TypeScript Override</strong></summary>
+
+For callback options or custom plugin ordering, use `quartz.ts`:
+
+```ts
+import { loadQuartzConfig, loadQuartzLayout } from "./quartz/plugins/loader/config-loader"
+import * as NotebookPlugin from "./.quartz/plugins"
+
+// Access individual exports for manual plugin registration
+NotebookPlugin.NotebookEmbedding({
+  defaultCollapsed: true,
+  downloadFromGitHub: true,
+})
+
+const config = await loadQuartzConfig()
+export default config
+export const layout = await loadQuartzLayout()
+```
+
+This plugin exports two components:
+- **`NotebookEmbedding`** — The transformer that replaces `.ipynb` links with embedded HTML
+- **`NotebookAssetsEmitter`** — The emitter that writes extracted images to the output directory
+
+Both are registered automatically via the plugin manifest. You only need the TS override for advanced customization.
+
+</details>
+
+## Cell Types Supported
+
+| Cell Type | Rendering |
+|-----------|-----------|
+| Code cells | Syntax-highlighted source with execution counts |
+| Stream output (`stdout`/`stderr`) | Monospace pre blocks |
+| Execute results (text) | Formatted text output |
+| Display data (images) | Extracted PNG files with white background |
+| Display data (HTML) | Sanitized HTML output |
+| Error output | Styled error tracebacks |
+| Markdown cells | Rendered via remark/rehype pipeline |
+
+## Security
+
+HTML outputs in notebook cells are sanitized using `rehype-sanitize` with a safe default allowlist. `<script>` tags and event handlers are stripped. Use the `allowedHtmlTags` option to widen the allowlist only if you trust your notebook sources.
+
+## Build & Development
 
 ```bash
 npm install
-npm run build
+npm run build    # Bundle to dist/
+npm test         # Run tests
+npm run check    # Typecheck + lint + format + test
 ```
 
-> [!important]
-> After building, the `dist/` directory should be committed to the repository. It is not gitignored, as Quartz uses it for pre-built distribution.
-
-## Build and Distribution
-
-The template is configured to bundle all dependencies by default via `noExternal: [/.*/]` in `tsup.config.ts`. This ensures that users don't need to install any dependencies when using your plugin.
-
-- **Singleton Externals**: Certain packages (`preact`, `vfile`, `unified`, `@jackyzha0/quartz`) are kept external to ensure only one instance of them exists across all plugins.
-- **Native Dependencies**: If your plugin uses native dependencies (like `sharp`, `@napi-rs/simple-git`, etc.), you must exclude them from bundling. Use a regex pattern in `noExternal` to exclude them, for example: `noExternal: [/^(?!sharp)/]`.
-- **CI Verification**: The included CI workflow verifies that `dist/` is up to date on every push.
-
-## Usage in Quartz
-
-Install your plugin into a Quartz v5 site:
-
-```bash
-npx quartz plugin add github:quartz-community/plugin-template
-```
-
-Then register it in `quartz.config.yaml`:
-
-```yaml
-plugins:
-  - source: github:quartz-community/plugin-template
-    enabled: true
-    options:
-      highlightToken: "=="
-```
-
-If you need to use the plugin in `quartz.ts` for advanced overrides:
-
-```ts
-import * as ExternalPlugin from "./.quartz/plugins";
-
-export default {
-  plugins: {
-    transformers: [ExternalPlugin.ExampleTransformer({ highlightToken: "==" })],
-  },
-};
-```
-
-## Plugin factory pattern (Astro-style)
-
-Quartz plugins are factory functions that return an object with a `name` and hook implementations.
-This mirrors Astro's integration pattern (a function returning an object of hooks), which makes
-composition and configuration explicit and predictable.
-
-```ts
-import type { QuartzTransformerPlugin } from "@quartz-community/types";
-
-export const MyTransformer: QuartzTransformerPlugin<{ enabled: boolean }> = (opts) => {
-  return {
-    name: "MyTransformer",
-    markdownPlugins() {
-      return [];
-    },
-  };
-};
-```
-
-## Examples included
-
-### Transformer
-
-`ExampleTransformer` shows how to:
-
-- apply a custom remark plugin
-- run a rehype plugin
-- inject CSS/JS resources
-- perform a text transform hook
-
-```ts
-import { ExampleTransformer } from "@quartz-community/plugin-template";
-
-ExampleTransformer({
-  highlightToken: "==",
-  headingClass: "example-plugin-heading",
-  enableGfm: true,
-  addHeadingSlugs: true,
-});
-```
-
-The transformer uses a custom remark plugin to convert `==highlight==` into bold text and a rehype
-plugin to attach a class to all headings. It also injects a small inline CSS/JS snippet.
-
-### Filter
-
-`ExampleFilter` demonstrates frontmatter-driven filtering:
-
-```ts
-ExampleFilter({
-  allowDrafts: false,
-  excludeTags: ["private", "wip"],
-  excludePathPrefixes: ["_drafts/", "_private/"],
-});
-```
-
-### Emitter
-
-`ExampleEmitter` emits a JSON manifest of all pages:
-
-```ts
-ExampleEmitter({
-  manifestSlug: "plugin-manifest",
-  includeFrontmatter: true,
-  metadata: { project: "My Garden" },
-  transformManifest: (json) => json.replace("My Garden", "Quartz"),
-});
-```
-
-## API reference
-
-### `ExampleTransformer(options)`
-
-| Option            | Type      | Default                    | Description                   |
-| ----------------- | --------- | -------------------------- | ----------------------------- |
-| `highlightToken`  | `string`  | `"=="`                     | Token used to highlight text. |
-| `headingClass`    | `string`  | `"example-plugin-heading"` | Class added to headings.      |
-| `enableGfm`       | `boolean` | `true`                     | Enables `remark-gfm`.         |
-| `addHeadingSlugs` | `boolean` | `true`                     | Enables `rehype-slug`.        |
-
-### `ExampleFilter(options)`
-
-| Option                | Type       | Default                     | Description               |
-| --------------------- | ---------- | --------------------------- | ------------------------- |
-| `allowDrafts`         | `boolean`  | `false`                     | Publish draft pages.      |
-| `excludeTags`         | `string[]` | `["private"]`               | Tags to exclude.          |
-| `excludePathPrefixes` | `string[]` | `["_drafts/", "_private/"]` | Path prefixes to exclude. |
-
-### `ExampleEmitter(options)`
-
-| Option                | Type                       | Default                                   | Description                               |
-| --------------------- | -------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `manifestSlug`        | `string`                   | `"plugin-manifest"`                       | Output filename (without extension).      |
-| `includeFrontmatter`  | `boolean`                  | `true`                                    | Include frontmatter in output.            |
-| `metadata`            | `Record<string, unknown>`  | `{ generator: "Quartz Plugin Template" }` | Extra metadata in manifest.               |
-| `transformManifest`   | `(json: string) => string` | `undefined`                               | Custom transformer for emitted JSON.      |
-| `manifestScriptClass` | `string`                   | `undefined`                               | Optional CSS class if rendered into HTML. |
-
-## Testing
-
-```bash
-npm test
-```
-
-## Build and lint
-
-```bash
-npm run build
-npm run lint
-npm run format
-```
-
-## Publishing
-
-Tags matching `v*` trigger the GitHub Actions publish workflow. Ensure `NPM_TOKEN` is set in the
-repository secrets.
-
-## Component Plugins (UI Components)
-
-In addition to transformer/filter/emitter plugins, you can create **component plugins** that provide
-UI elements for Quartz layouts. See `src/components/ExampleComponent.tsx` for a reference.
-
-### Component Pattern
-
-```tsx
-import type { QuartzComponent, QuartzComponentConstructor } from "@quartz-community/types";
-import style from "./styles/example.scss";
-import script from "./scripts/example.inline.ts";
-
-export default ((opts?: MyComponentOptions) => {
-  const Component: QuartzComponent = (props) => {
-    return <div class="my-component">...</div>;
-  };
-
-  Component.css = style;
-  Component.afterDOMLoaded = script;
-
-  return Component;
-}) satisfies QuartzComponentConstructor;
-```
-
-### Receiving YAML Options in Component-Only Plugins
-
-Processing plugins (transformers, filters, emitters, page types) receive options automatically
-through their factory function. **Component-only plugins** (those with `"category": ["component"]`)
-are loaded via side-effect import and need an extra step to receive YAML options.
-
-Export an `init` function from your plugin's entry point. Quartz's config-loader will call it with
-the merged options from `package.json` `defaultOptions` and the user's `quartz.config.yaml`:
-
-```ts
-// src/index.ts
-export function init(options?: Record<string, unknown>): void {
-  // Use the options to configure your plugin
-  const myOption = (options?.myOption as boolean) ?? false;
-  // e.g. register a view, set global state, etc.
-}
-```
-
-Then declare default values in your `package.json` manifest:
-
-```json
-{
-  "quartz": {
-    "category": ["component"],
-    "defaultOptions": {
-      "myOption": false
-    }
-  }
-}
-```
-
-Users configure options in `quartz.config.yaml`:
-
-```yaml
-plugins:
-  - source: github:your-username/my-component-plugin
-    enabled: true
-    options:
-      myOption: true
-```
-
-Quartz merges `defaultOptions` with the user's `options` (user values take precedence) and passes
-the result to `init()`. If no `init` export exists, the plugin is loaded via side-effect import as
-before — no breaking change for existing plugins.
-
-### Client-Side Scripts
-
-Component scripts run in the browser and must handle Quartz's SPA navigation. Key patterns:
-
-1. **Use `@ts-nocheck`** - Client scripts run in a different context than build-time code
-2. **Listen to `nav` event** - Fires after each page navigation (including initial load)
-3. **Listen to `prenav` event** - Fires before navigation, use for saving state
-4. **Use `window.addCleanup()`** - Register cleanup functions for event listeners
-5. **Use `fetchData` global** - Access page metadata via the `fetchData` promise (handles base path correctly)
-
-See `src/components/scripts/example.inline.ts` for a complete example with all patterns.
-
-### Common Helper Functions
-
-These utilities are commonly needed in component plugins:
-
-```js
-function removeAllChildren(element) {
-  while (element.firstChild) element.removeChild(element.firstChild);
-}
-
-function simplifySlug(slug) {
-  return slug.endsWith("/index") ? slug.slice(0, -6) : slug;
-}
-
-function getCurrentSlug() {
-  let slug = window.location.pathname;
-  if (slug.startsWith("/")) slug = slug.slice(1);
-  if (slug.endsWith("/")) slug = slug.slice(0, -1);
-  return slug || "index";
-}
-```
-
-### State Persistence
-
-Use `localStorage` for persistent state (survives browser close) and `sessionStorage` for
-temporary state (like scroll positions):
-
-```js
-localStorage.setItem("myPlugin-state", JSON.stringify(state));
-sessionStorage.setItem("myPlugin-scrollTop", element.scrollTop.toString());
-```
-
-## Migration Guide (from Quartz v4)
-
-When migrating a v4 component to a standalone plugin:
-
-1. **Replace Quartz imports** with `@quartz-community/types`
-2. **Copy utility functions** (path helpers, DOM utils) into your plugin
-3. **Use `@ts-nocheck`** for inline scripts that can't be type-checked
-4. **Use the `fetchData` global** to access `contentIndex.json` with the correct base path
-5. **Test with both local and production builds**
+> **Note:** The `dist/` directory is committed to the repository. Quartz uses it for pre-built distribution. After building, always commit the updated `dist/`.
 
 ## License
 
