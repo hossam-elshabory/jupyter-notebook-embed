@@ -1,5 +1,5 @@
 {
-  "name": "@github:hossam-elshabory/jupyter-notebook-embed",
+  "name": "@hossam-elshabory/jupyter-notebook-embed",
   "version": "1.0.0",
   "description": "Embed Jupyter notebooks directly into Quartz pages from GitHub URLs.",
   "type": "module",
@@ -8,7 +8,7 @@
   "homepage": "https://quartz.jzhao.xyz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/github:hossam-elshabory/jupyter-notebook-embed"
+    "url": "https://github.com/hossam-elshabory/jupyter-notebook-embed"
   },
   "keywords": [
     "quartz",
