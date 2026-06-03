@@ -1,2 +1,2 @@
-export { default as ExampleComponent } from "./ExampleComponent";
-export type { ExampleComponentOptions } from "./ExampleComponent";
+// Placeholder for future component exports.
+// This plugin currently provides only transformer + emitter functionality.

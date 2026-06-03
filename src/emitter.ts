@@ -1,91 +1,48 @@
-import path from "node:path";
-import fs from "node:fs/promises";
-import type {
-  QuartzEmitterPlugin,
-  ProcessedContent,
-  BuildCtx,
-  FilePath,
-  FullSlug,
-} from "@quartz-community/types";
-import type { ExampleEmitterOptions } from "./types";
+import path from "node:path"
+import fs from "node:fs/promises"
+import type { QuartzEmitterPlugin, BuildCtx, ProcessedContent, FilePath } from "@quartz-community/types"
+import { drainImages, hasImages } from "./registry"
 
-const defaultOptions: ExampleEmitterOptions = {
-  manifestSlug: "plugin-manifest",
-  includeFrontmatter: true,
-  metadata: {
-    generator: "Quartz Plugin Template",
-  },
-};
+export interface NotebookAssetsEmitterOptions { }
 
 const joinSegments = (...segments: string[]) =>
   segments
     .filter((segment) => segment.length > 0)
     .join("/")
-    .replace(/\/+/g, "/") as FilePath;
+    .replace(/\/+/g, "/") as FilePath
 
-const writeFile = async (
-  outputDir: string,
-  slug: FullSlug,
-  ext: `.${string}` | "",
-  content: string,
-) => {
-  const outputPath = joinSegments(outputDir, `${slug}${ext}`) as FilePath;
-  await fs.mkdir(path.dirname(outputPath), { recursive: true });
-  await fs.writeFile(outputPath, content);
-  return outputPath;
-};
+const emitAssets = async (ctx: BuildCtx): Promise<FilePath[]> => {
+  if (!hasImages()) return []
 
-/**
- * Example emitter that writes a JSON manifest of content metadata.
- */
-export const ExampleEmitter: QuartzEmitterPlugin<Partial<ExampleEmitterOptions>> = (
-  userOptions?: Partial<ExampleEmitterOptions>,
-) => {
-  const options = { ...defaultOptions, ...userOptions };
-  const emitManifest = async (ctx: BuildCtx, content: ProcessedContent[]) => {
-    const manifest = {
-      ...options.metadata,
-      generatedAt: new Date().toISOString(),
-      pages: content.map(([_tree, vfile]) => {
-        const frontmatter = (vfile.data?.frontmatter ?? {}) as {
-          title?: string;
-          tags?: string[];
-          [key: string]: unknown;
-        };
-        return {
-          slug: vfile.data?.slug ?? null,
-          title: frontmatter.title ?? null,
-          tags: frontmatter.tags ?? null,
-          filePath: vfile.data?.filePath ?? null,
-          frontmatter: options.includeFrontmatter ? frontmatter : undefined,
-        };
-      }),
-    };
+  const outputPaths: FilePath[] = []
+  const images = drainImages()
 
-    let json = `${JSON.stringify(manifest, null, 2)}\n`;
-    if (options.transformManifest) {
-      json = options.transformManifest(json);
+  const outputDir = path.join(ctx.argv.output, "notebook-assets")
+  await fs.mkdir(outputDir, { recursive: true })
+
+  for (const [_url, fileList] of images) {
+    for (const image of fileList) {
+      const outputPath = joinSegments(ctx.argv.output, "notebook-assets", image.filename)
+      const buffer = Buffer.from(image.data, "base64")
+      await fs.writeFile(outputPath, buffer)
+      outputPaths.push(outputPath)
     }
+  }
 
-    const output = await writeFile(
-      ctx.argv.output,
-      options.manifestSlug as FullSlug,
-      ".json",
-      json,
-    );
-    return [output];
-  };
+  return outputPaths
+}
 
+export const NotebookAssetsEmitter: QuartzEmitterPlugin<Partial<NotebookAssetsEmitterOptions>> = () => {
   return {
-    name: "ExampleEmitter",
-    async emit(ctx, content, _resources) {
-      return emitManifest(ctx, content);
+    name: "NotebookAssetsEmitter",
+    async emit(ctx, _content, _resources) {
+      return emitAssets(ctx)
     },
-    async *partialEmit(ctx, content, _resources, _changeEvents) {
-      const outputPaths = await emitManifest(ctx, content);
+    async *partialEmit(ctx, content, resources, _changeEvents) {
+      const outputPaths = await emitAssets(ctx)
       for (const outputPath of outputPaths) {
-        yield outputPath;
+        yield outputPath
       }
     },
-  };
-};
+  }
+}

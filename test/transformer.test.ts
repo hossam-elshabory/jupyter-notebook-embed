@@ -1,22 +1,17 @@
-import { describe, expect, it } from "vitest";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkStringify from "remark-stringify";
-import { ExampleTransformer } from "../src/transformer";
-import { createCtx } from "./helpers";
+import { describe, expect, it } from "vitest"
+import { deterministicId } from "../src/transformer"
 
-describe("ExampleTransformer", () => {
-  it("highlights text wrapped in the token", async () => {
-    const ctx = createCtx();
-    const transformer = ExampleTransformer({ highlightToken: "==" });
-    const plugins = transformer.markdownPlugins?.(ctx) ?? [];
+describe("NotebookEmbedding", () => {
+  it("generates deterministic IDs from URLs", () => {
+    const id1 = deterministicId("https://github.com/user/repo/blob/main/nb.ipynb")
+    const id2 = deterministicId("https://github.com/user/repo/blob/main/nb.ipynb")
+    expect(id1).toBe(id2)
+    expect(id1).toMatch(/^nb-[a-f0-9]{8}$/)
+  })
 
-    const file = await unified()
-      .use(remarkParse)
-      .use(plugins)
-      .use(remarkStringify)
-      .process("Hello ==Quartz==");
-
-    expect(String(file)).toContain("**Quartz**");
-  });
-});
+  it("generates different IDs for different URLs", () => {
+    const id1 = deterministicId("https://github.com/user/repo/blob/main/nb1.ipynb")
+    const id2 = deterministicId("https://github.com/user/repo/blob/main/nb2.ipynb")
+    expect(id1).not.toBe(id2)
+  })
+})

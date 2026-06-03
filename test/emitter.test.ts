@@ -1,45 +1,43 @@
-import { describe, expect, it } from "vitest";
-import path from "node:path";
-import fs from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { ExampleEmitter } from "../src/emitter";
-import { assertFilePath, assertFullSlug, createCtx, createProcessedContent } from "./helpers";
+import { describe, expect, it } from "vitest"
+import path from "node:path"
+import fs from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { NotebookAssetsEmitter } from "../src/emitter"
+import { registerImages } from "../src/registry"
+import { createCtx } from "./helpers"
 
-describe("ExampleEmitter", () => {
-  it("writes a manifest to the output directory", async () => {
-    const outputDir = await fs.mkdtemp(path.join(tmpdir(), "quartz-plugin-"));
-    const ctx = createCtx({ argv: { output: outputDir } });
-    const emitter = ExampleEmitter({ manifestSlug: "manifest" });
+describe("NotebookAssetsEmitter", () => {
+  it("writes extracted images to notebook-assets directory", async () => {
+    const outputDir = await fs.mkdtemp(path.join(tmpdir(), "quartz-notebook-"))
+    const ctx = createCtx({ argv: { output: outputDir } })
+    const emitter = NotebookAssetsEmitter()
 
-    const content = [
-      createProcessedContent({
-        slug: assertFullSlug("hello-world"),
-        filePath: assertFilePath("notes/hello-world.md"),
-        frontmatter: { title: "Hello", tags: ["docs"] },
-      }),
-    ];
+    // Register a test image
+    const testPng = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+    registerImages("https://example.com/test.ipynb", [
+      { filename: "nb-test-cell0-output0.png", data: testPng },
+    ])
 
-    const result = await emitter.emit(ctx, content, {
+    const result = await emitter.emit(ctx, [], {
       css: [],
       js: [],
       additionalHead: [],
-    });
-    const outputPaths = Array.isArray(result) ? result : await collectAsync(result);
-    const outputPath = outputPaths[0];
-    if (!outputPath) {
-      throw new Error("Expected emitter to return an output path");
-    }
-    const manifest = JSON.parse(await fs.readFile(outputPath, "utf8"));
+    })
+    const outputPaths = Array.isArray(result) ? result : await collectAsync(result)
 
-    expect(outputPath).toContain("manifest.json");
-    expect(manifest.pages[0].slug).toBe("hello-world");
-  });
-});
+    expect(outputPaths.length).toBe(1)
+    expect(outputPaths[0]).toContain("notebook-assets")
+
+    // Verify the file exists and is a valid PNG
+    const written = await fs.readFile(outputPaths[0])
+    expect(written[0]).toBe(0x89) // PNG signature byte
+  })
+})
 
 const collectAsync = async <T>(iterable: AsyncIterable<T>): Promise<T[]> => {
-  const results: T[] = [];
+  const results: T[] = []
   for await (const item of iterable) {
-    results.push(item);
+    results.push(item)
   }
-  return results;
-};
+  return results
+}

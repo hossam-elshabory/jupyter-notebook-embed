@@ -1,4 +1,4 @@
-export type {
+import type {
   BuildCtx,
   ChangeEvent,
   CSSResource,
@@ -17,46 +17,98 @@ export type {
   VirtualPage,
   QuartzPageTypePlugin,
   QuartzPageTypePluginInstance,
-} from "@quartz-community/types";
+} from "@quartz-community/types"
 
-export interface ExampleTransformerOptions {
-  /** Token used to highlight text, defaults to ==highlight== */
-  highlightToken: string;
-  /** Add a CSS class to all headings in the rendered HTML. */
-  headingClass: string;
-  /** Enable remark-gfm for tables/task lists. */
-  enableGfm: boolean;
-  /** Enable adding slug IDs to headings. */
-  addHeadingSlugs: boolean;
+// ── Notebook JSON Structure (nbformat 4) ──
+
+export interface NotebookMetadata {
+  kernelspec?: { display_name?: string; language?: string; name?: string }
+  language_info?: { name?: string; version?: string;[key: string]: unknown }
+  [key: string]: unknown
 }
 
-export interface ExampleFilterOptions {
-  /** Allow pages marked draft: true to publish. */
-  allowDrafts: boolean;
-  /** Exclude pages that contain any of these frontmatter tags. */
-  excludeTags: string[];
-  /** Exclude paths that start with any of these prefixes (relative to content root). */
-  excludePathPrefixes: string[];
+export interface MarkdownCell {
+  cell_type: "markdown"
+  source: string[]
+  metadata?: Record<string, unknown>
+  id?: string
 }
 
-export interface ExampleEmitterOptions {
-  /** Filename to emit at the site root. */
-  manifestSlug: string;
-  /** Whether to include the frontmatter block in the manifest. */
-  includeFrontmatter: boolean;
-  /** Extra metadata to write at the top level of the manifest. */
-  metadata: Record<string, unknown>;
-  /** Optional hook to transform the emitted manifest JSON string. */
-  transformManifest?: (json: string) => string;
-  /** Add a custom class to the emitted manifest <script> tag if used in HTML. */
-  manifestScriptClass?: string;
+export interface CodeCell {
+  cell_type: "code"
+  source: string[]
+  execution_count: number | null
+  outputs: Output[]
+  metadata?: Record<string, unknown>
+  id?: string
 }
 
-export interface ExampleComponentOptions {
-  /** Text to prefix before the title */
-  prefix?: string;
-  /** Text to suffix after the title */
-  suffix?: string;
-  /** CSS class name to apply */
-  className?: string;
+export interface RawCell {
+  cell_type: "raw"
+  source: string[]
+  metadata?: Record<string, unknown>
+}
+
+export type NotebookCell = MarkdownCell | CodeCell | RawCell
+
+export interface StreamOutput {
+  output_type: "stream"
+  name: "stdout" | "stderr"
+  text: string | string[]
+}
+
+export interface ExecuteResultOutput {
+  output_type: "execute_result"
+  execution_count: number | null
+  data: MimeBundle
+  metadata?: Record<string, unknown>
+}
+
+export interface DisplayDataOutput {
+  output_type: "display_data"
+  data: MimeBundle
+  metadata?: Record<string, unknown>
+}
+
+export interface ErrorOutput {
+  output_type: "error"
+  ename: string
+  evalue: string
+  traceback: string[]
+}
+
+export type Output = StreamOutput | ExecuteResultOutput | DisplayDataOutput | ErrorOutput
+
+export interface MimeBundle {
+  "text/plain"?: string | string[]
+  "text/html"?: string | string[]
+  "image/png"?: string
+  "image/svg+xml"?: string
+  "application/javascript"?: string
+  [key: string]: unknown
+}
+
+export interface NotebookData {
+  cells: NotebookCell[]
+  metadata?: NotebookMetadata
+  nbformat?: number
+  nbformat_minor?: number
+}
+
+// ── Plugin Options ──
+
+export interface NotebookEmbeddingOptions {
+  cacheDir: string
+  downloadFromGitHub: boolean
+  downloadTimeout: number
+  defaultCollapsed: boolean
+  showCellCount: boolean
+  allowedHtmlTags?: string[]
+}
+
+// ── Internal Types ──
+
+export interface PendingImage {
+  filename: string
+  data: string // base64
 }

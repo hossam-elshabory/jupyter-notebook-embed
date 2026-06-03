@@ -1,15 +1,19 @@
-export { ExampleTransformer } from "./transformer";
-export { ExampleFilter } from "./filter";
-export { ExampleEmitter } from "./emitter";
-export { default as ExampleComponent } from "./components/ExampleComponent";
+export { NotebookEmbedding } from "./transformer"
+export { NotebookAssetsEmitter } from "./emitter"
 
 export type {
-  ExampleTransformerOptions,
-  ExampleFilterOptions,
-  ExampleEmitterOptions,
-} from "./types";
-
-export type { ExampleComponentOptions } from "./components/ExampleComponent";
+  NotebookEmbeddingOptions,
+  NotebookData,
+  NotebookCell,
+  MarkdownCell,
+  CodeCell,
+  RawCell,
+  Output as NotebookOutput,
+  StreamOutput,
+  ExecuteResultOutput,
+  DisplayDataOutput,
+  ErrorOutput,
+} from "./types"
 
 // Re-export shared types from @quartz-community/types
 export type {
@@ -25,4 +29,4 @@ export type {
   PageMatcher,
   PageGenerator,
   VirtualPage,
-} from "@quartz-community/types";
+} from "@quartz-community/types"

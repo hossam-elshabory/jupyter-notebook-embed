@@ -1,23 +1,23 @@
 {
-  "name": "@quartz-community/plugin-template",
-  "version": "0.1.0",
-  "description": "Template repository for Quartz community plugins.",
+  "name": "@quartz-community/jupyter-notebook-embed",
+  "version": "1.0.0",
+  "description": "Embed Jupyter notebooks directly into Quartz pages from GitHub URLs.",
   "type": "module",
   "license": "MIT",
   "author": "Quartz Community",
   "homepage": "https://quartz.jzhao.xyz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quartz-community/plugin-template"
+    "url": "https://github.com/quartz-community/jupyter-notebook-embed"
   },
   "keywords": [
     "quartz",
     "quartz-plugin",
-    "plugin-template",
+    "jupyter",
+    "notebook",
+    "ipynb",
     "remark",
-    "rehype",
-    "mdast",
-    "hast"
+    "rehype"
   ],
   "files": [
     "dist",
@@ -66,7 +66,12 @@
   },
   "dependencies": {
     "@quartz-community/types": "github:quartz-community/types",
-    "@quartz-community/utils": "github:quartz-community/utils"
+    "@quartz-community/utils": "github:quartz-community/utils",
+    "remark-gfm": "^4.0.1",
+    "remark-rehype": "^11.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "hast-util-from-html": "^2.0.3",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@types/hast": "^3.0.4",
@@ -76,49 +81,40 @@
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "github-slugger": "^2.0.0",
     "hast-util-to-jsx-runtime": "^2.3.6",
-    "mdast-util-find-and-replace": "^3.0.2",
     "preact": "^10.28.2",
     "prettier": "^3.6.2",
-    "rehype-slug": "^6.0.0",
-    "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
-    "remark-stringify": "^11.0.0",
+    "rehype-stringify": "^6.0.0",
     "sass": "^1.97.3",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0",
     "vfile": "^6.0.3",
     "vitest": "^2.1.9"
   },
   "quartz": {
-    "name": "plugin-template",
-    "displayName": "Plugin Template",
-    "category": "transformer",
+    "name": "jupyter-notebook-embed",
+    "displayName": "Jupyter Notebook Embed",
+    "category": ["transformer", "emitter"],
     "version": "1.0.0",
     "quartzVersion": ">=5.0.0",
     "dependencies": [],
     "defaultOrder": 50,
     "defaultEnabled": true,
-    "defaultOptions": {},
-    "optionSchema": {
-      "highlightToken": {
-        "type": "enum",
-        "values": [
-          "==",
-          "**",
-          "~~"
-        ]
-      }
+    "defaultOptions": {
+      "cacheDir": "quartz/.quartz-cache/notebooks",
+      "downloadFromGitHub": true,
+      "downloadTimeout": 10000,
+      "defaultCollapsed": false,
+      "showCellCount": true
     },
-    "components": {
-      "ExampleComponent": {
-        "displayName": "Example Component",
-        "defaultPosition": "right",
-        "defaultPriority": 50
-      }
+    "optionSchema": {
+      "downloadFromGitHub": { "type": "boolean" },
+      "downloadTimeout": { "type": "number" },
+      "defaultCollapsed": { "type": "boolean" },
+      "showCellCount": { "type": "boolean" },
+      "cacheDir": { "type": "string" }
     }
   },
   "engines": {
