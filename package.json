@@ -65,8 +65,8 @@
     }
   },
   "dependencies": {
-    "@quartz-community/types": "github:quartz-community/types",
-    "@quartz-community/utils": "github:quartz-community/utils",
+    "@quartz-community/types": "quartz-community/types",
+    "@quartz-community/utils": "quartz-community/utils",
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.0.0",
     "rehype-sanitize": "^6.0.0",
