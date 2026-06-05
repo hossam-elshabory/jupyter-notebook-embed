@@ -38,7 +38,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 
 // node_modules/extend/index.js
 var require_extend = __commonJS({
-  "node_modules/extend/index.js"(exports$1, module) {
+  "node_modules/extend/index.js"(exports, module) {
     var hasOwn = Object.prototype.hasOwnProperty;
     var toStr = Object.prototype.toString;
     var defineProperty = Object.defineProperty;
@@ -128,7 +128,7 @@ var require_extend = __commonJS({
 
 // node_modules/xtend/immutable.js
 var require_immutable = __commonJS({
-  "node_modules/xtend/immutable.js"(exports$1, module) {
+  "node_modules/xtend/immutable.js"(exports, module) {
     module.exports = extend2;
     var hasOwnProperty2 = Object.prototype.hasOwnProperty;
     function extend2() {
@@ -148,7 +148,7 @@ var require_immutable = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/schema.js
 var require_schema = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/schema.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/schema.js"(exports, module) {
     module.exports = Schema2;
     var proto2 = Schema2.prototype;
     proto2.space = null;
@@ -166,7 +166,7 @@ var require_schema = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/merge.js
 var require_merge = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/merge.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/merge.js"(exports, module) {
     var xtend = require_immutable();
     var Schema2 = require_schema();
     module.exports = merge2;
@@ -194,7 +194,7 @@ var require_merge = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/normalize.js
 var require_normalize = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/normalize.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/normalize.js"(exports, module) {
     module.exports = normalize2;
     function normalize2(value) {
       return value.toLowerCase();
@@ -204,7 +204,7 @@ var require_normalize = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/info.js
 var require_info = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/info.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/info.js"(exports, module) {
     module.exports = Info2;
     var proto2 = Info2.prototype;
     proto2.space = null;
@@ -228,15 +228,15 @@ var require_info = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/types.js
 var require_types = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/types.js"(exports$1) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/types.js"(exports) {
     var powers2 = 0;
-    exports$1.boolean = increment2();
-    exports$1.booleanish = increment2();
-    exports$1.overloadedBoolean = increment2();
-    exports$1.number = increment2();
-    exports$1.spaceSeparated = increment2();
-    exports$1.commaSeparated = increment2();
-    exports$1.commaOrSpaceSeparated = increment2();
+    exports.boolean = increment2();
+    exports.booleanish = increment2();
+    exports.overloadedBoolean = increment2();
+    exports.number = increment2();
+    exports.spaceSeparated = increment2();
+    exports.commaSeparated = increment2();
+    exports.commaOrSpaceSeparated = increment2();
     function increment2() {
       return Math.pow(2, ++powers2);
     }
@@ -245,7 +245,7 @@ var require_types = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/defined-info.js
 var require_defined_info = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/defined-info.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/defined-info.js"(exports, module) {
     var Info2 = require_info();
     var types = require_types();
     module.exports = DefinedInfo2;
@@ -281,7 +281,7 @@ var require_defined_info = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/create.js
 var require_create = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/create.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/create.js"(exports, module) {
     var normalize2 = require_normalize();
     var Schema2 = require_schema();
     var DefinedInfo2 = require_defined_info();
@@ -317,7 +317,7 @@ var require_create = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/xlink.js
 var require_xlink = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/xlink.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/xlink.js"(exports, module) {
     var create2 = require_create();
     module.exports = create2({
       space: "xlink",
@@ -340,7 +340,7 @@ var require_xlink = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/xml.js
 var require_xml = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/xml.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/xml.js"(exports, module) {
     var create2 = require_create();
     module.exports = create2({
       space: "xml",
@@ -359,7 +359,7 @@ var require_xml = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-sensitive-transform.js
 var require_case_sensitive_transform = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-sensitive-transform.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-sensitive-transform.js"(exports, module) {
     module.exports = caseSensitiveTransform2;
     function caseSensitiveTransform2(attributes, attribute) {
       return attribute in attributes ? attributes[attribute] : attribute;
@@ -369,7 +369,7 @@ var require_case_sensitive_transform = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-insensitive-transform.js
 var require_case_insensitive_transform = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-insensitive-transform.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/util/case-insensitive-transform.js"(exports, module) {
     var caseSensitiveTransform2 = require_case_sensitive_transform();
     module.exports = caseInsensitiveTransform2;
     function caseInsensitiveTransform2(attributes, property) {
@@ -380,7 +380,7 @@ var require_case_insensitive_transform = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/xmlns.js
 var require_xmlns = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/xmlns.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/xmlns.js"(exports, module) {
     var create2 = require_create();
     var caseInsensitiveTransform2 = require_case_insensitive_transform();
     module.exports = create2({
@@ -399,7 +399,7 @@ var require_xmlns = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/aria.js
 var require_aria = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/aria.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/aria.js"(exports, module) {
     var types = require_types();
     var create2 = require_create();
     var booleanish2 = types.booleanish;
@@ -467,7 +467,7 @@ var require_aria = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/html.js
 var require_html = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/html.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/html.js"(exports, module) {
     var types = require_types();
     var create2 = require_create();
     var caseInsensitiveTransform2 = require_case_insensitive_transform();
@@ -829,7 +829,7 @@ var require_html = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/html.js
 var require_html2 = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/html.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/html.js"(exports, module) {
     var merge2 = require_merge();
     var xlink2 = require_xlink();
     var xml2 = require_xml();
@@ -842,7 +842,7 @@ var require_html2 = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/lib/svg.js
 var require_svg = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/lib/svg.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/lib/svg.js"(exports, module) {
     var types = require_types();
     var create2 = require_create();
     var caseSensitiveTransform2 = require_case_sensitive_transform();
@@ -1414,7 +1414,7 @@ var require_svg = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/svg.js
 var require_svg2 = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/svg.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/svg.js"(exports, module) {
     var merge2 = require_merge();
     var xlink2 = require_xlink();
     var xml2 = require_xml();
@@ -1427,7 +1427,7 @@ var require_svg2 = __commonJS({
 
 // node_modules/html-void-elements/index.json
 var require_html_void_elements = __commonJS({
-  "node_modules/html-void-elements/index.json"(exports$1, module) {
+  "node_modules/html-void-elements/index.json"(exports, module) {
     module.exports = [
       "area",
       "base",
@@ -1458,7 +1458,7 @@ var require_html_void_elements = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/unist-util-is/convert.js
 var require_convert = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/unist-util-is/convert.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/unist-util-is/convert.js"(exports, module) {
     module.exports = convert2;
     function convert2(test) {
       if (typeof test === "string") {
@@ -1524,7 +1524,7 @@ var require_convert = __commonJS({
 
 // node_modules/hast-util-is-element/convert.js
 var require_convert2 = __commonJS({
-  "node_modules/hast-util-is-element/convert.js"(exports$1, module) {
+  "node_modules/hast-util-is-element/convert.js"(exports, module) {
     module.exports = convert2;
     function convert2(test) {
       if (typeof test === "string") {
@@ -1584,7 +1584,7 @@ var require_convert2 = __commonJS({
 
 // node_modules/hast-util-is-element/index.js
 var require_hast_util_is_element = __commonJS({
-  "node_modules/hast-util-is-element/index.js"(exports$1, module) {
+  "node_modules/hast-util-is-element/index.js"(exports, module) {
     var convert2 = require_convert2();
     module.exports = isElement;
     isElement.convert = convert2;
@@ -1611,7 +1611,7 @@ var require_hast_util_is_element = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/hast-util-whitespace/index.js
 var require_hast_util_whitespace = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/hast-util-whitespace/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/hast-util-whitespace/index.js"(exports, module) {
     module.exports = interElementWhiteSpace;
     var re = /[ \t\n\f\r]/g;
     function interElementWhiteSpace(node2) {
@@ -1630,10 +1630,10 @@ var require_hast_util_whitespace = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/util/siblings.js
 var require_siblings = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/util/siblings.js"(exports$1) {
+  "node_modules/hast-util-to-html/lib/omission/util/siblings.js"(exports) {
     var whiteSpace = require_hast_util_whitespace();
-    exports$1.before = siblings(-1);
-    exports$1.after = siblings(1);
+    exports.before = siblings(-1);
+    exports.after = siblings(1);
     function siblings(increment2) {
       return sibling;
       function sibling(parent, index2, includeWhiteSpace) {
@@ -1655,7 +1655,7 @@ var require_siblings = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/util/first.js
 var require_first = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/util/first.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/util/first.js"(exports, module) {
     var after = require_siblings().after;
     module.exports = first;
     function first(parent, includeWhiteSpace) {
@@ -1666,7 +1666,7 @@ var require_first = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/util/place.js
 var require_place = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/util/place.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/util/place.js"(exports, module) {
     module.exports = place;
     function place(parent, child) {
       return parent && parent.children && parent.children.indexOf(child);
@@ -1676,7 +1676,7 @@ var require_place = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/util/white-space-left.js
 var require_white_space_left = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/util/white-space-left.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/util/white-space-left.js"(exports, module) {
     var convert2 = require_convert();
     var whiteSpace = require_hast_util_whitespace();
     module.exports = whiteSpaceLeft;
@@ -1689,7 +1689,7 @@ var require_white_space_left = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/omission.js
 var require_omission = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/omission.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/omission.js"(exports, module) {
     module.exports = omission;
     var own7 = {}.hasOwnProperty;
     function omission(handlers2) {
@@ -1705,7 +1705,7 @@ var require_omission = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/closing.js
 var require_closing = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/closing.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/closing.js"(exports, module) {
     var convert2 = require_convert();
     var element3 = require_hast_util_is_element();
     var whiteSpaceLeft = require_white_space_left();
@@ -1852,7 +1852,7 @@ var require_closing = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/opening.js
 var require_opening = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/opening.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/omission/opening.js"(exports, module) {
     var convert2 = require_convert();
     var element3 = require_hast_util_is_element();
     var before = require_siblings().before;
@@ -1922,15 +1922,15 @@ var require_opening = __commonJS({
 
 // node_modules/hast-util-to-html/lib/omission/index.js
 var require_omission2 = __commonJS({
-  "node_modules/hast-util-to-html/lib/omission/index.js"(exports$1) {
-    exports$1.opening = require_opening();
-    exports$1.closing = require_closing();
+  "node_modules/hast-util-to-html/lib/omission/index.js"(exports) {
+    exports.opening = require_opening();
+    exports.closing = require_closing();
   }
 });
 
 // node_modules/hast-util-to-html/lib/all.js
 var require_all = __commonJS({
-  "node_modules/hast-util-to-html/lib/all.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/all.js"(exports, module) {
     var one3 = require_one();
     module.exports = all3;
     function all3(ctx, parent) {
@@ -1948,7 +1948,7 @@ var require_all = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/character-entities-html4/index.json
 var require_character_entities_html4 = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/character-entities-html4/index.json"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/character-entities-html4/index.json"(exports, module) {
     module.exports = {
       nbsp: "\xA0",
       iexcl: "\xA1",
@@ -2208,7 +2208,7 @@ var require_character_entities_html4 = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/character-entities-legacy/index.json
 var require_character_entities_legacy = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/character-entities-legacy/index.json"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/character-entities-legacy/index.json"(exports, module) {
     module.exports = {
       AElig: "\xC6",
       AMP: "&",
@@ -2322,7 +2322,7 @@ var require_character_entities_legacy = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/is-hexadecimal/index.js
 var require_is_hexadecimal = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/is-hexadecimal/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/is-hexadecimal/index.js"(exports, module) {
     module.exports = hexadecimal;
     function hexadecimal(character) {
       var code4 = typeof character === "string" ? character.charCodeAt(0) : character;
@@ -2333,7 +2333,7 @@ var require_is_hexadecimal = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/is-decimal/index.js
 var require_is_decimal = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/is-decimal/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/is-decimal/index.js"(exports, module) {
     module.exports = decimal;
     function decimal(character) {
       var code4 = typeof character === "string" ? character.charCodeAt(0) : character;
@@ -2344,7 +2344,7 @@ var require_is_decimal = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/is-alphabetical/index.js
 var require_is_alphabetical = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/is-alphabetical/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/is-alphabetical/index.js"(exports, module) {
     module.exports = alphabetical;
     function alphabetical(character) {
       var code4 = typeof character === "string" ? character.charCodeAt(0) : character;
@@ -2355,7 +2355,7 @@ var require_is_alphabetical = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/is-alphanumerical/index.js
 var require_is_alphanumerical = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/is-alphanumerical/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/is-alphanumerical/index.js"(exports, module) {
     var alphabetical = require_is_alphabetical();
     var decimal = require_is_decimal();
     module.exports = alphanumerical;
@@ -2367,7 +2367,7 @@ var require_is_alphanumerical = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/stringify-entities/dangerous.json
 var require_dangerous = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/stringify-entities/dangerous.json"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/stringify-entities/dangerous.json"(exports, module) {
     module.exports = [
       "cent",
       "copy",
@@ -2383,7 +2383,7 @@ var require_dangerous = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/stringify-entities/index.js
 var require_stringify_entities = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/stringify-entities/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/stringify-entities/index.js"(exports, module) {
     var entities = require_character_entities_html4();
     var legacy = require_character_entities_legacy();
     var hexadecimal = require_is_hexadecimal();
@@ -2479,7 +2479,7 @@ var require_stringify_entities = __commonJS({
 
 // node_modules/hast-util-to-html/lib/text.js
 var require_text = __commonJS({
-  "node_modules/hast-util-to-html/lib/text.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/text.js"(exports, module) {
     var xtend = require_immutable();
     var entities = require_stringify_entities();
     module.exports = text7;
@@ -2495,7 +2495,7 @@ var require_text = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/property-information/find.js
 var require_find = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/property-information/find.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/property-information/find.js"(exports, module) {
     var normalize2 = require_normalize();
     var DefinedInfo2 = require_defined_info();
     var Info2 = require_info();
@@ -2547,9 +2547,9 @@ var require_find = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/space-separated-tokens/index.js
 var require_space_separated_tokens = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/space-separated-tokens/index.js"(exports$1) {
-    exports$1.parse = parse5;
-    exports$1.stringify = stringify;
+  "node_modules/hast-util-to-html/node_modules/space-separated-tokens/index.js"(exports) {
+    exports.parse = parse5;
+    exports.stringify = stringify;
     var empty2 = "";
     var space2 = " ";
     var whiteSpace = /[ \t\n\r\f]+/g;
@@ -2565,9 +2565,9 @@ var require_space_separated_tokens = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/comma-separated-tokens/index.js
 var require_comma_separated_tokens = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/comma-separated-tokens/index.js"(exports$1) {
-    exports$1.parse = parse5;
-    exports$1.stringify = stringify;
+  "node_modules/hast-util-to-html/node_modules/comma-separated-tokens/index.js"(exports) {
+    exports.parse = parse5;
+    exports.stringify = stringify;
     var comma = ",";
     var space2 = " ";
     var empty2 = "";
@@ -2606,7 +2606,7 @@ var require_comma_separated_tokens = __commonJS({
 
 // node_modules/hast-util-to-html/node_modules/ccount/index.js
 var require_ccount = __commonJS({
-  "node_modules/hast-util-to-html/node_modules/ccount/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/node_modules/ccount/index.js"(exports, module) {
     module.exports = ccount2;
     function ccount2(source, character) {
       var value = String(source);
@@ -2627,7 +2627,7 @@ var require_ccount = __commonJS({
 
 // node_modules/hast-util-to-html/lib/constants.js
 var require_constants = __commonJS({
-  "node_modules/hast-util-to-html/lib/constants.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/constants.js"(exports, module) {
     var nil = "\0";
     var ampersand = "&";
     var space2 = " ";
@@ -2687,7 +2687,7 @@ var require_constants = __commonJS({
 
 // node_modules/hast-util-to-html/lib/element.js
 var require_element = __commonJS({
-  "node_modules/hast-util-to-html/lib/element.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/element.js"(exports, module) {
     var xtend = require_immutable();
     var svg3 = require_svg2();
     var find2 = require_find();
@@ -2846,7 +2846,7 @@ var require_element = __commonJS({
 
 // node_modules/hast-util-to-html/lib/doctype.js
 var require_doctype = __commonJS({
-  "node_modules/hast-util-to-html/lib/doctype.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/doctype.js"(exports, module) {
     module.exports = doctype2;
     var docLower = "doctype";
     var docUpper = docLower.toUpperCase();
@@ -2879,7 +2879,7 @@ var require_doctype = __commonJS({
 
 // node_modules/hast-util-to-html/lib/comment.js
 var require_comment = __commonJS({
-  "node_modules/hast-util-to-html/lib/comment.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/comment.js"(exports, module) {
     module.exports = comment2;
     function comment2(ctx, node2) {
       return "<!--" + node2.value + "-->";
@@ -2889,7 +2889,7 @@ var require_comment = __commonJS({
 
 // node_modules/hast-util-to-html/lib/raw.js
 var require_raw = __commonJS({
-  "node_modules/hast-util-to-html/lib/raw.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/raw.js"(exports, module) {
     var text7 = require_text();
     module.exports = raw;
     function raw(ctx, node2) {
@@ -2900,7 +2900,7 @@ var require_raw = __commonJS({
 
 // node_modules/hast-util-to-html/lib/one.js
 var require_one = __commonJS({
-  "node_modules/hast-util-to-html/lib/one.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/one.js"(exports, module) {
     module.exports = one3;
     var own7 = {}.hasOwnProperty;
     var handlers2 = {};
@@ -2925,7 +2925,7 @@ var require_one = __commonJS({
 
 // node_modules/hast-util-to-html/lib/index.js
 var require_lib = __commonJS({
-  "node_modules/hast-util-to-html/lib/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/lib/index.js"(exports, module) {
     var html5 = require_html2();
     var svg3 = require_svg2();
     var voids = require_html_void_elements();
@@ -2973,14 +2973,14 @@ var require_lib = __commonJS({
 
 // node_modules/hast-util-to-html/index.js
 var require_hast_util_to_html = __commonJS({
-  "node_modules/hast-util-to-html/index.js"(exports$1, module) {
+  "node_modules/hast-util-to-html/index.js"(exports, module) {
     module.exports = require_lib();
   }
 });
 
 // node_modules/rehype-stringify/index.js
 var require_rehype_stringify = __commonJS({
-  "node_modules/rehype-stringify/index.js"(exports$1, module) {
+  "node_modules/rehype-stringify/index.js"(exports, module) {
     var xtend = require_immutable();
     var toHTML = require_hast_util_to_html();
     module.exports = stringify;
@@ -3439,6 +3439,7 @@ var html = create({
     allowFullScreen: boolean,
     allowPaymentRequest: boolean,
     allowUserMedia: boolean,
+    alpha: boolean,
     alt: null,
     as: null,
     async: boolean,
@@ -3452,8 +3453,12 @@ var html = create({
     checked: boolean,
     cite: null,
     className: spaceSeparated,
+    closedBy: null,
+    colorSpace: null,
     cols: number,
-    colSpan: null,
+    colSpan: number,
+    command: null,
+    commandFor: null,
     content: null,
     contentEditable: booleanish,
     controls: boolean,
@@ -3633,8 +3638,10 @@ var html = create({
     seamless: boolean,
     selected: boolean,
     shadowRootClonable: boolean,
+    shadowRootCustomElementRegistry: boolean,
     shadowRootDelegatesFocus: boolean,
     shadowRootMode: null,
+    shadowRootSerializable: boolean,
     shape: null,
     size: number,
     sizes: null,
@@ -3771,8 +3778,11 @@ var html = create({
     allowTransparency: null,
     autoCorrect: null,
     autoSave: null,
+    credentialless: boolean,
     disablePictureInPicture: boolean,
     disableRemotePlayback: boolean,
+    exportParts: commaSeparated,
+    part: spaceSeparated,
     prefix: null,
     property: null,
     results: number,
@@ -3826,6 +3836,7 @@ var svg = create({
     markerEnd: "marker-end",
     markerMid: "marker-mid",
     markerStart: "marker-start",
+    maskType: "mask-type",
     navDown: "nav-down",
     navDownLeft: "nav-down-left",
     navDownRight: "nav-down-right",
@@ -4096,6 +4107,7 @@ var svg = create({
     markerWidth: null,
     mask: null,
     maskContentUnits: null,
+    maskType: null,
     maskUnits: null,
     mathematical: null,
     max: null,
@@ -13777,10 +13789,7 @@ var ensureCacheDir = async (cacheDir) => {
 var cacheNotebook = async (cacheDir, url, data) => {
   try {
     const hash = urlToHash(url);
-    await fs.writeFile(
-      default2.join(cacheDir, `${hash}.json`),
-      JSON.stringify(data, null, 2)
-    );
+    await fs.writeFile(default2.join(cacheDir, `${hash}.json`), JSON.stringify(data, null, 2));
   } catch (error) {
     console.warn(`[NotebookEmbedding] Failed to cache notebook: ${error}`);
   }
@@ -25160,6 +25169,18 @@ var BIGINT = 8;
 
 // node_modules/@ungap/structured-clone/esm/deserialize.js
 var env = typeof self === "object" ? self : globalThis;
+var guard = (name, init) => {
+  switch (name) {
+    case "Function":
+    case "SharedWorker":
+    case "Worker":
+    case "eval":
+    case "setInterval":
+    case "setTimeout":
+      throw new TypeError("unable to deserialize " + name);
+  }
+  return new env[name](init);
+};
 var deserializer = ($2, _) => {
   const as = (out, index2) => {
     $2.set(index2, out);
@@ -25205,7 +25226,7 @@ var deserializer = ($2, _) => {
       }
       case ERROR: {
         const { name, message } = value;
-        return as(new env[name](message), index2);
+        return as(guard(name, message), index2);
       }
       case BIGINT:
         return as(BigInt(value), index2);
@@ -25218,7 +25239,7 @@ var deserializer = ($2, _) => {
         return as(new DataView(buffer), value);
       }
     }
-    return as(new env[type](value), index2);
+    return as(guard(type, value), index2);
   };
   return unpair;
 };
@@ -26182,7 +26203,7 @@ var formatOutput = (output, cellIndex, outputIndex, urlHash, sourceUrl) => {
   }
   return "";
 };
-var cellToHtml = async (cell, index2, urlHash, sourceUrl) => {
+var cellToHtml = async (cell, index2, urlHash, sourceUrl, language) => {
   const cellId = `notebook-cell-${index2}`;
   let content3 = "";
   if (cell.cell_type === "markdown") {
@@ -26196,7 +26217,7 @@ var cellToHtml = async (cell, index2, urlHash, sourceUrl) => {
       <div class="notebook-code-input">
         <div class="notebook-execution-count">${executionLabel}</div>
         <div class="notebook-code-content">
-          <pre><code class="language-python">${escapeHtml(source)}</code></pre>
+          <pre><code class="language-${language}">${escapeHtml(source)}</code></pre>
         </div>
       </div>`;
     let outputsHtml = "";
@@ -26206,7 +26227,10 @@ var cellToHtml = async (cell, index2, urlHash, sourceUrl) => {
         <div class="notebook-output-label">${outputLabel}</div>
         <div class="notebook-output-content">`;
       for (let i = 0; i < cell.outputs.length; i++) {
-        outputsHtml += formatOutput(cell.outputs[i], index2, i, urlHash, sourceUrl);
+        const output = cell.outputs[i];
+        if (output) {
+          outputsHtml += formatOutput(output, index2, i, urlHash, sourceUrl);
+        }
       }
       outputsHtml += "</div></div>";
     }
@@ -26274,7 +26298,10 @@ var convertToSourceUrl = (url) => {
 };
 var notebookToHtml = async (notebook, sourceUrl, isCollapsed, opts) => {
   const urlHash = deterministicId(sourceUrl).slice(3);
-  const cells = (await Promise.all(notebook.cells.map((cell, i) => cellToHtml(cell, i, urlHash, sourceUrl)))).join("\n");
+  const language = notebook.metadata?.language_info?.name || "python";
+  const cells = (await Promise.all(
+    notebook.cells.map((cell, i) => cellToHtml(cell, i, urlHash, sourceUrl, language))
+  )).join("\n");
   const notebookName = extractNotebookName(sourceUrl);
   const sourceUrlDisplay = convertToSourceUrl(sourceUrl);
   const colabUrl = convertToColabUrl(sourceUrl);
@@ -26441,7 +26468,7 @@ var NotebookAssetsEmitter = () => {
     async emit(ctx, _content, _resources) {
       return emitAssets(ctx);
     },
-    async *partialEmit(ctx, content3, resources, _changeEvents) {
+    async *partialEmit(ctx, _content, _resources, _changeEvents) {
       const outputPaths = await emitAssets(ctx);
       for (const outputPath of outputPaths) {
         yield outputPath;

@@ -48,6 +48,7 @@
     "dev": "tsup --watch",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier . --check",
+    "format:fix": "prettier . --write",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run format && npm run test"
@@ -103,7 +104,7 @@
     "version": "1.0.0",
     "quartzVersion": ">=5.0.0",
     "dependencies": [],
-    "defaultOrder": 50,
+    "defaultOrder": 20,
     "defaultEnabled": true,
     "defaultOptions": {
       "cacheDir": "quartz/.quartz-cache/notebooks",

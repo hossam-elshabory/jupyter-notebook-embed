@@ -1,14 +1,20 @@
-import type { PluggableList } from "unified"
-import type { Root, Element } from "hast"
-import { visit } from "unist-util-visit"
-import { fromHtml } from "hast-util-from-html"
-import crypto from "node:crypto"
-import type { QuartzTransformerPlugin } from "@quartz-community/types"
-import type { NotebookEmbeddingOptions, NotebookData } from "./types"
-import { ensureCacheDir, downloadNotebook, loadCachedNotebook, isCacheStale, cacheNotebook } from "./cache"
-import { cellToHtml } from "./render"
-import { ICON_GITHUB, ICON_COLAB } from "./icons"
-import style from "./styles/notebook.scss"
+import type { PluggableList } from "unified";
+import type { Root, Element } from "hast";
+import { visit } from "unist-util-visit";
+import { fromHtml } from "hast-util-from-html";
+import crypto from "node:crypto";
+import type { QuartzTransformerPlugin } from "@quartz-community/types";
+import type { NotebookEmbeddingOptions, NotebookData } from "./types";
+import {
+  ensureCacheDir,
+  downloadNotebook,
+  loadCachedNotebook,
+  isCacheStale,
+  cacheNotebook,
+} from "./cache";
+import { cellToHtml } from "./render";
+import { ICON_GITHUB, ICON_COLAB } from "./icons";
+import style from "./styles/notebook.scss";
 
 const defaultOptions: NotebookEmbeddingOptions = {
   cacheDir: "quartz/.quartz-cache/notebooks",
@@ -16,53 +22,53 @@ const defaultOptions: NotebookEmbeddingOptions = {
   downloadTimeout: 10000,
   defaultCollapsed: false,
   showCellCount: true,
-}
+};
 
-const deterministicId = (url: string): string => {
-  const hash = crypto.createHash("sha256").update(url).digest("hex").slice(0, 8)
-  return `nb-${hash}`
-}
+export const deterministicId = (url: string): string => {
+  const hash = crypto.createHash("sha256").update(url).digest("hex").slice(0, 8);
+  return `nb-${hash}`;
+};
 
 const extractNotebookName = (url: string): string => {
   try {
-    return (new URL(url).pathname.split("/").pop() || "notebook.ipynb").replace(".ipynb", "")
+    return (new URL(url).pathname.split("/").pop() || "notebook.ipynb").replace(".ipynb", "");
   } catch {
-    return url.split("/").pop()?.replace(".ipynb", "") || "notebook"
+    return url.split("/").pop()?.replace(".ipynb", "") || "notebook";
   }
-}
+};
 
 const convertToColabUrl = (githubUrl: string): string => {
   try {
-    const url = new URL(githubUrl)
+    const url = new URL(githubUrl);
     if (url.hostname === "github.com") {
-      return `https://colab.research.google.com/github${url.pathname}`
+      return `https://colab.research.google.com/github${url.pathname}`;
     } else if (url.hostname === "raw.githubusercontent.com") {
-      const parts = url.pathname.split("/").filter(Boolean)
+      const parts = url.pathname.split("/").filter(Boolean);
       if (parts.length >= 3) {
-        const [user, repo, branch, ...rest] = parts
-        return `https://colab.research.google.com/github/${user}/${repo}/blob/${branch}/${rest.join("/")}`
+        const [user, repo, branch, ...rest] = parts;
+        return `https://colab.research.google.com/github/${user}/${repo}/blob/${branch}/${rest.join("/")}`;
       }
     }
-    return githubUrl
+    return githubUrl;
   } catch {
-    return githubUrl
+    return githubUrl;
   }
-}
+};
 
 const convertToSourceUrl = (url: string): string => {
   try {
     if (url.includes("raw.githubusercontent.com")) {
-      const parts = new URL(url).pathname.split("/").filter(Boolean)
+      const parts = new URL(url).pathname.split("/").filter(Boolean);
       if (parts.length >= 3) {
-        const [user, repo, branch, ...rest] = parts
-        return `https://github.com/${user}/${repo}/blob/${branch}/${rest.join("/")}`
+        const [user, repo, branch, ...rest] = parts;
+        return `https://github.com/${user}/${repo}/blob/${branch}/${rest.join("/")}`;
       }
     }
-    return url
+    return url;
   } catch {
-    return url
+    return url;
   }
-}
+};
 
 const notebookToHtml = async (
   notebook: NotebookData,
@@ -70,18 +76,24 @@ const notebookToHtml = async (
   isCollapsed: boolean,
   opts: NotebookEmbeddingOptions,
 ): Promise<string> => {
-  const urlHash = deterministicId(sourceUrl).slice(3)
-  const cells = (
-    await Promise.all(notebook.cells.map((cell, i) => cellToHtml(cell, i, urlHash, sourceUrl)))
-  ).join("\n")
+  const urlHash = deterministicId(sourceUrl).slice(3);
 
-  const notebookName = extractNotebookName(sourceUrl)
-  const sourceUrlDisplay = convertToSourceUrl(sourceUrl)
-  const colabUrl = convertToColabUrl(sourceUrl)
-  const uniqueId = deterministicId(sourceUrl)
+  // Extract language from metadata, defaulting to python
+  const language = notebook.metadata?.language_info?.name || "python";
+
+  const cells = (
+    await Promise.all(
+      notebook.cells.map((cell, i) => cellToHtml(cell, i, urlHash, sourceUrl, language)),
+    )
+  ).join("\n");
+
+  const notebookName = extractNotebookName(sourceUrl);
+  const sourceUrlDisplay = convertToSourceUrl(sourceUrl);
+  const colabUrl = convertToColabUrl(sourceUrl);
+  const uniqueId = deterministicId(sourceUrl);
   const cellCount = opts.showCellCount
     ? `<span class="notebook-cell-count">${notebook.cells.length} cells</span>`
-    : ""
+    : "";
 
   return `
     <div class="jupyter-notebook-embedded" data-notebook-url="${sourceUrl}">
@@ -121,13 +133,13 @@ const notebookToHtml = async (
       <div class="notebook-cells-container">
         <div class="notebook-cells">${cells}</div>
       </div>
-    </div>`
-}
+    </div>`;
+};
 
 export const NotebookEmbedding: QuartzTransformerPlugin<Partial<NotebookEmbeddingOptions>> = (
   userOpts?,
 ) => {
-  const opts = { ...defaultOptions, ...userOpts }
+  const opts = { ...defaultOptions, ...userOpts };
 
   return {
     name: "NotebookEmbedding",
@@ -135,54 +147,54 @@ export const NotebookEmbedding: QuartzTransformerPlugin<Partial<NotebookEmbeddin
       return [
         () => {
           return async (tree: Root, _file) => {
-            await ensureCacheDir(opts.cacheDir)
-            const promises: Promise<void>[] = []
+            await ensureCacheDir(opts.cacheDir);
+            const promises: Promise<void>[] = [];
 
             visit(tree, "element", (node: Element) => {
               if (node.tagName === "a" && node.properties?.href) {
-                const href = node.properties.href as string
+                const href = node.properties.href as string;
 
-                let cleanHref = href
-                let queryString = ""
-                let isCollapsed = opts.defaultCollapsed
+                let cleanHref = href;
+                let queryString = "";
+                let isCollapsed = opts.defaultCollapsed;
 
-                const qIndex = cleanHref.indexOf("?")
+                const qIndex = cleanHref.indexOf("?");
                 if (qIndex !== -1) {
-                  queryString = cleanHref.slice(qIndex + 1)
-                  cleanHref = cleanHref.slice(0, qIndex)
-                  const hashIndex = queryString.indexOf("#")
-                  if (hashIndex !== -1) queryString = queryString.slice(0, hashIndex)
+                  queryString = cleanHref.slice(qIndex + 1);
+                  cleanHref = cleanHref.slice(0, qIndex);
+                  const hashIndex = queryString.indexOf("#");
+                  if (hashIndex !== -1) queryString = queryString.slice(0, hashIndex);
                 } else {
-                  const hashIndex = cleanHref.indexOf("#")
-                  if (hashIndex !== -1) cleanHref = cleanHref.slice(0, hashIndex)
+                  const hashIndex = cleanHref.indexOf("#");
+                  if (hashIndex !== -1) cleanHref = cleanHref.slice(0, hashIndex);
                 }
 
                 if (queryString) {
-                  const params = new URLSearchParams(queryString)
+                  const params = new URLSearchParams(queryString);
                   if (params.has("collapsed")) {
-                    isCollapsed = params.get("collapsed") === "true"
+                    isCollapsed = params.get("collapsed") === "true";
                   } else if (params.has("expanded")) {
-                    isCollapsed = params.get("expanded") !== "true"
+                    isCollapsed = params.get("expanded") !== "true";
                   }
                 }
 
                 if (cleanHref.endsWith(".ipynb")) {
                   const promise = (async () => {
                     try {
-                      let notebook = await loadCachedNotebook(opts.cacheDir, cleanHref)
+                      let notebook = await loadCachedNotebook(opts.cacheDir, cleanHref);
 
                       if (!notebook && opts.downloadFromGitHub) {
-                        notebook = await downloadNotebook(cleanHref, opts.downloadTimeout)
+                        notebook = await downloadNotebook(cleanHref, opts.downloadTimeout);
                         if (notebook) {
-                          await cacheNotebook(opts.cacheDir, cleanHref, notebook)
+                          await cacheNotebook(opts.cacheDir, cleanHref, notebook);
                         }
                       } else if (notebook && opts.downloadFromGitHub) {
-                        const stale = await isCacheStale(cleanHref, opts.downloadTimeout)
+                        const stale = await isCacheStale(cleanHref, opts.downloadTimeout);
                         if (stale) {
-                          const fresh = await downloadNotebook(cleanHref, opts.downloadTimeout)
+                          const fresh = await downloadNotebook(cleanHref, opts.downloadTimeout);
                           if (fresh) {
-                            notebook = fresh
-                            await cacheNotebook(opts.cacheDir, cleanHref, fresh)
+                            notebook = fresh;
+                            await cacheNotebook(opts.cacheDir, cleanHref, fresh);
                           }
                         }
                       }
@@ -193,43 +205,43 @@ export const NotebookEmbedding: QuartzTransformerPlugin<Partial<NotebookEmbeddin
                           cleanHref,
                           isCollapsed,
                           opts,
-                        )
-                        node.tagName = "div"
+                        );
+                        node.tagName = "div";
                         node.properties = {
                           className: ["notebook-wrapper-container"],
                           "data-notebook-url": cleanHref,
-                        }
-                        const notebookAst = fromHtml(notebookHtml, { fragment: true })
-                        node.children = notebookAst.children as any
+                        };
+                        const notebookAst = fromHtml(notebookHtml, { fragment: true });
+                        node.children = notebookAst.children as Element["children"];
                       } else {
                         node.properties = {
                           ...node.properties,
                           className: ["notebook-link-unavailable"],
-                        }
+                        };
                       }
                     } catch (error) {
                       console.warn(
                         `[NotebookEmbedding] Error processing notebook link ${href}:`,
                         error,
-                      )
+                      );
                     }
-                  })()
-                  promises.push(promise)
+                  })();
+                  promises.push(promise);
                 }
               }
-            })
+            });
 
-            await Promise.all(promises)
-          }
+            await Promise.all(promises);
+          };
         },
-      ]
+      ];
     },
     externalResources() {
       return {
         css: [{ content: style, inline: true }],
         js: [],
         additionalHead: [],
-      }
+      };
     },
-  }
-}
+  };
+};

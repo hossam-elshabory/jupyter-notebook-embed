@@ -43,9 +43,9 @@ plugins:
   - source: github:github:hossam-elshabory/jupyter-notebook-embed
     enabled: true
     options:
-      defaultCollapsed: true    # Start notebooks collapsed (default: false)
-      showCellCount: false      # Hide "N cells" badge (default: true)
-      downloadFromGitHub: true  # Auto-download from GitHub URLs (default: true)
+      defaultCollapsed: true # Start notebooks collapsed (default: false)
+      showCellCount: false # Hide "N cells" badge (default: true)
+      downloadFromGitHub: true # Auto-download from GitHub URLs (default: true)
 ```
 
 ## How It Works
@@ -53,6 +53,7 @@ plugins:
 1. **Link detection** — Any `<a>` tag with an `href` ending in `.ipynb` is automatically detected and replaced with the embedded notebook view.
 
 2. **Query parameters** — Control collapse state per-notebook by appending `?collapsed=true` or `?expanded=true` to the link:
+
    ```markdown
    [notebook.ipynb](https://github.com/user/repo/blob/main/nb.ipynb?collapsed=true)
    ```
@@ -65,14 +66,14 @@ plugins:
 
 ## Configuration Reference
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `defaultCollapsed` | `boolean` | `false` | Whether notebooks start collapsed. |
-| `showCellCount` | `boolean` | `true` | Show the "N cells" badge in the header. |
-| `downloadFromGitHub` | `boolean` | `true` | Auto-download notebooks from GitHub URLs. Disable for offline builds. |
-| `downloadTimeout` | `number` | `10000` | Timeout in ms for notebook downloads. ⚙️ |
-| `cacheDir` | `string` | `"quartz/.quartz-cache/notebooks"` | Directory for cached notebook JSON. ⚙️ |
-| `allowedHtmlTags` | `string[]` | `undefined` | Additional HTML tags to allow in notebook outputs (beyond the safe default). ⚙️ |
+| Option               | Type       | Default                            | Description                                                                     |
+| -------------------- | ---------- | ---------------------------------- | ------------------------------------------------------------------------------- |
+| `defaultCollapsed`   | `boolean`  | `false`                            | Whether notebooks start collapsed.                                              |
+| `showCellCount`      | `boolean`  | `true`                             | Show the "N cells" badge in the header.                                         |
+| `downloadFromGitHub` | `boolean`  | `true`                             | Auto-download notebooks from GitHub URLs. Disable for offline builds.           |
+| `downloadTimeout`    | `number`   | `10000`                            | Timeout in ms for notebook downloads. ⚙️                                        |
+| `cacheDir`           | `string`   | `"quartz/.quartz-cache/notebooks"` | Directory for cached notebook JSON. ⚙️                                          |
+| `allowedHtmlTags`    | `string[]` | `undefined`                        | Additional HTML tags to allow in notebook outputs (beyond the safe default). ⚙️ |
 
 <details>
 <summary><strong>Advanced: TypeScript Override</strong></summary>
@@ -80,21 +81,22 @@ plugins:
 For callback options or custom plugin ordering, use `quartz.ts`:
 
 ```ts
-import { loadQuartzConfig, loadQuartzLayout } from "./quartz/plugins/loader/config-loader"
-import * as NotebookPlugin from "./.quartz/plugins"
+import { loadQuartzConfig, loadQuartzLayout } from "./quartz/plugins/loader/config-loader";
+import * as NotebookPlugin from "./.quartz/plugins";
 
 // Access individual exports for manual plugin registration
 NotebookPlugin.NotebookEmbedding({
   defaultCollapsed: true,
   downloadFromGitHub: true,
-})
+});
 
-const config = await loadQuartzConfig()
-export default config
-export const layout = await loadQuartzLayout()
+const config = await loadQuartzConfig();
+export default config;
+export const layout = await loadQuartzLayout();
 ```
 
 This plugin exports two components:
+
 - **`NotebookEmbedding`** — The transformer that replaces `.ipynb` links with embedded HTML
 - **`NotebookAssetsEmitter`** — The emitter that writes extracted images to the output directory
 
@@ -104,15 +106,15 @@ Both are registered automatically via the plugin manifest. You only need the TS 
 
 ## Cell Types Supported
 
-| Cell Type | Rendering |
-|-----------|-----------|
-| Code cells | Syntax-highlighted source with execution counts |
-| Stream output (`stdout`/`stderr`) | Monospace pre blocks |
-| Execute results (text) | Formatted text output |
-| Display data (images) | Extracted PNG files with white background |
-| Display data (HTML) | Sanitized HTML output |
-| Error output | Styled error tracebacks |
-| Markdown cells | Rendered via remark/rehype pipeline |
+| Cell Type                         | Rendering                                       |
+| --------------------------------- | ----------------------------------------------- |
+| Code cells                        | Syntax-highlighted source with execution counts |
+| Stream output (`stdout`/`stderr`) | Monospace pre blocks                            |
+| Execute results (text)            | Formatted text output                           |
+| Display data (images)             | Extracted PNG files with white background       |
+| Display data (HTML)               | Sanitized HTML output                           |
+| Error output                      | Styled error tracebacks                         |
+| Markdown cells                    | Rendered via remark/rehype pipeline             |
 
 ## Security
 

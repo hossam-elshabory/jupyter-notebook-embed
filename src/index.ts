@@ -1,5 +1,5 @@
-export { NotebookEmbedding } from "./transformer"
-export { NotebookAssetsEmitter } from "./emitter"
+export { NotebookEmbedding } from "./transformer";
+export { NotebookAssetsEmitter } from "./emitter";
 
 export type {
   NotebookEmbeddingOptions,
@@ -13,7 +13,7 @@ export type {
   ExecuteResultOutput,
   DisplayDataOutput,
   ErrorOutput,
-} from "./types"
+} from "./types";
 
 // Re-export shared types from @quartz-community/types
 export type {
@@ -29,4 +29,4 @@ export type {
   PageMatcher,
   PageGenerator,
   VirtualPage,
-} from "@quartz-community/types"
+} from "@quartz-community/types";
