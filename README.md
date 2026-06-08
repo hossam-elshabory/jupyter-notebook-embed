@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This plugin is built upon the [quartz-jupyter-embed-plugin](https://github.com/vazome/quartz-jupyter-embed-plugin) plugin with some extra features. The porting of this plugin was done using GLM 5.1 on a ralph loop.
+>
 # Jupyter Notebook Embed for Quartz
 
 Embed Jupyter notebooks directly into your [Quartz](https://quartz.jzhao.xyz) site. Any link ending in `.ipynb` is automatically rendered as an interactive, styled notebook with cell outputs, images, and one-click Colab/GitHub buttons.
